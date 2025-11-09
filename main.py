@@ -8,7 +8,7 @@ pygame.init()
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("Wave in the Wild: Parallax Clouds")
+pygame.display.set_caption("Wave of the Wild: Jump mechanics added")
 
 # Colors
 SKY_BLUE = (135, 206, 235)
@@ -36,6 +36,12 @@ player_y = SCREEN_HEIGHT - FLOOR_HEIGHT - player_height
 player_rect = pygame.Rect(player_x, player_y, player_width, player_height)
 player_speed = 5
 
+# Jump mechanics setup
+velocity_y = 0  # Vertical velocity
+gravity = 0.5   # Gravity effect
+jump_power = -10  # Jump strength (negative because it moves the player up)
+on_ground = True  # Flag to check if the player is on the ground
+
 # Cloud Movement Variables (for scrolling clouds)
 cloud_positions = [0, 0]  # Initial horizontal positions for the cloud layers.
 
@@ -61,6 +67,21 @@ while game_running:
         if player_rect.x > SCREEN_WIDTH - player_width:  # Prevent player from moving off-screen to the right
             player_rect.x = SCREEN_WIDTH - player_width
 
+    # Jumping (only if on the ground)
+    if keys[pygame.K_SPACE] and on_ground:
+        velocity_y = jump_power  # Apply upward force
+        on_ground = False  # Player is in the air
+
+    # Apply gravity (pull player down)
+    velocity_y += gravity
+    player_rect.y += velocity_y
+
+    # Collision with the floor (stop falling when touching the ground)
+    if player_rect.bottom >= SCREEN_HEIGHT - FLOOR_HEIGHT:
+        player_rect.bottom = SCREEN_HEIGHT - FLOOR_HEIGHT  # Prevent player from sinking below floor
+        velocity_y = 0  # Stop falling
+        on_ground = True  # Player is now on the ground
+        
     # Move clouds to the left (parallax)
     cloud_positions[0] -= cloud_speed  # Cloud 1 (far background)
     cloud_positions[1] -= cloud_speed * 1.5  # Cloud 2 (closer background)
