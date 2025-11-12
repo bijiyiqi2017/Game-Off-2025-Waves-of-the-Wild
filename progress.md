@@ -6,6 +6,29 @@ It follows semantic versioning alignment with the project's `CHANGELOG.md` but i
 
 ---
 
+
+## 🗓️ November 10 2025 — Progress
+
+- Fixed bug ~ Window screen resizing issue works properly now. Dug through Pygame's documentation for the answer.
+
+## 🗓️ November 9 2025 — Progress
+
+- README.md Initial content added; will be updated further as the project progresses.
+
+- Pylint Integration: Considering adding Pylint to the project for improved code quality and consistency. Researching setup and best practices for integrating with VS Code and GitHub.
+
+## 🗓️ November 8 2025 — Progress
+
+- Created topics,and a brief description of the repo for the about section.
+
+
+
+## 🗓️ November 7, 2025 — Progress
+
+- Studied parallax effect & set clouds to move via parallax effect
+
+- Fixed left and right key movements & created tiger placeholder.
+
 ## 🗓️ November 5, 2025 — Progress Entry
 **Version:** 0.1.0-dev  
 **Stage:** Initial setup and prototype foundation  

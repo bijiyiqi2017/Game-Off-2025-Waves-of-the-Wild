@@ -42,16 +42,24 @@ cd Waves-of-the-Wild
 2️⃣ Create and activate a virtual environment
 ```bash
 python3 -m venv venv
+source venv/bin/activate 
+```
+
+# Linux/macOS
+
+```
 source venv/bin/activate   # Linux/macOS
 venv\Scripts\activate      # Windows
 ```
 
 3️⃣ Install dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
 ▶️ Running the Game
+
 ```bash
 python main.py
 ```
@@ -70,11 +78,18 @@ Wildlife AI	Basic movement and reactions	🔜
 Contributions, issue reports, and feature discussions are welcome.
 Please open an issue before submitting a pull request so we can align ideas early.
 
+## 🤝 Team Members — Wild Tide Team (WTT)
+Access the documentation for the team:
+
+- 🧾 [TeamMembers.md](https://github.com/bijiyiqi2017/Waves-of-the-Wild/blob/main/TeamMembers.md)
+
+
+## 📄 License
 📄 License
 This project is released under the MIT License.
 See the LICENSE file for details.
  
 
-“Every ripple begins with a spark — may your code bring the wild to life.”
+## “Every ripple begins with a spark — may your code bring the wild to life.”
 
 
