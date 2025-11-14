@@ -78,6 +78,22 @@ Wildlife AI	Basic movement and reactions	🔜
 Contributions, issue reports, and feature discussions are welcome.
 Please open an issue before submitting a pull request so we can align ideas early.
 
+## 🧹 Code Quality — Pylint
+
+This project uses **Pylint** via **GitHub Actions** to automatically check Python code for style and quality issues.
+
+Every time you push code, GitHub runs Pylint on all `.py` files to ensure consistency and maintain clean, readable code.
+
+If your pull request fails the linting check, you can run Pylint locally:
+
+```bash
+pip install pylint
+pylint your_script.py
+```
+
+![Pylint](https://github.com/bijiyiqi2017/Game-Off-2025-Waves-of-the-Wild/actions/workflows/pylint.yml/badge.svg)
+
+
 ## 🤝 Team Members — Wild Tide Team (WTT)
 Access the documentation for the team:
 
