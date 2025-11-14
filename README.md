@@ -80,7 +80,7 @@ Please open an issue before submitting a pull request so we can align ideas earl
 ## 🤝 Team Members — Wild Tide Team (WTT)
 Access the documentation for the team:
 
-- 🧾 [TeamMembers.md](https://github.com/bijiyiqi2017/Waves-of-the-Wild/blob/main/TeamMembers.md)
+- 🧾 [TeamMembers.md](https://github.com/bijiyiqi2017/Game-Off-2025-Waves-of-the-Wild/blob/main/TeamMembers.md)
 
 
 ## 📄 License

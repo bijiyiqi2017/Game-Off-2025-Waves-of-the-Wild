@@ -1,5 +1,6 @@
 import pygame
 import sys
+import random # For future banana respawning
 
 # Initialize Pygame
 pygame.init()
@@ -8,7 +9,7 @@ pygame.init()
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
-pygame.display.set_caption("Wave of the Wild: Jump mechanics added")
+pygame.display.set_caption("Wave of the Wild: Energy system")
 
 # Colors
 SKY_BLUE = (135, 206, 235)
@@ -16,6 +17,10 @@ JUNGLE_GREEN = (34, 139, 34)
 DARK_SOIL = (85, 53, 31)
 WHITE = (255, 255, 255)
 ORANGE = (255, 165, 0)  # placeholder tiger color
+YELLOW = (255, 255, 0)  # Banana and energy bar color
+RED = (255, 0, 0) # For GAME OVER! text
+
+font = pygame.font.SysFont(None, 80)
 
 # Floor setup
 FLOOR_HEIGHT = 60
@@ -42,12 +47,23 @@ gravity = 0.5   # Gravity effect
 jump_power = -10  # Jump strength (negative because it moves the player up)
 on_ground = True  # Flag to check if the player is on the ground
 
+# Energy System Setup
+
+max_energy = 100
+current_energy = max_energy
+energy_drain = 0.05 # Slow energy drain
+energy_gain = 20 # Energy gained per banana group collected
+
+# Single banana for testing
+banana_rect = pygame.Rect(400, 400, 30, 30)
+
 # Cloud Movement Variables (for scrolling clouds)
 cloud_positions = [0, 0]  # Initial horizontal positions for the cloud layers.
 
 # Game loop
 clock = pygame.time.Clock()
 game_running = True
+game_over = False
 
 while game_running:
     for event in pygame.event.get():
@@ -91,6 +107,17 @@ while game_running:
         player_rect.bottom = SCREEN_HEIGHT - FLOOR_HEIGHT  # Prevent player from sinking below floor
         velocity_y = 0  # Stop falling
         on_ground = True  # Player is now on the ground
+    
+    # Engery Logic
+    current_energy -= energy_drain
+    if current_energy <= 0:
+        current_energy = 0
+        game_over = True
+        
+    # Banana Collection
+    if player_rect.colliderect(banana_rect)    :
+        current_energy = min(current_energy + energy_gain, max_energy) # Increase Energy
+        banana_rect.topleft = (-100, -100) # Remove banana after collection
         
     # Move clouds to the left (parallax)
     cloud_positions[0] -= cloud_speed  # Cloud 1 (far background)
@@ -117,9 +144,23 @@ while game_running:
     pygame.draw.rect(screen, DARK_SOIL, jungle_floor)  # soil layer
     pygame.draw.rect(screen, JUNGLE_GREEN, (0, SCREEN_HEIGHT - FLOOR_HEIGHT, SCREEN_WIDTH, 20))  # grass/top
 
+    # Draw banana
+    pygame.draw.rect(screen, YELLOW, banana_rect)
+    
     # Draw player placeholder (tiger)
     pygame.draw.rect(screen, ORANGE, player_rect)
 
+    # Draw energy bar
+    pygame.draw.rect(screen, (100, 100, 100), (10, 10, 200, 20)) # Background
+    fill_width = int((current_energy / max_energy) * 200)
+    pygame.draw.rect(screen, YELLOW, (10, 10, fill_width, 20)) # Filled portion
+    
+    # Draw GAME OVER! Text
+    if game_over:
+        text_surface = font.render("GAME OVER!", True, RED)
+        text_rect = text_surface.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        screen.blit(text_surface, text_rect)
+        
     # Update the screen
     pygame.display.flip()
 
