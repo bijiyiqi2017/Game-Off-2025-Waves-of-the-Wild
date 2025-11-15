@@ -26,6 +26,35 @@ font = pygame.font.SysFont(None, 80)
 FLOOR_HEIGHT = 60
 jungle_floor = pygame.Rect(0, SCREEN_HEIGHT - FLOOR_HEIGHT, SCREEN_WIDTH, FLOOR_HEIGHT)
 
+# ====== PLATFORM SYSTEM ======
+# Platform color for visual placeholder
+PLATFORM_COLOR = (139, 69, 19)  # Brown color for platforms
+
+# Platform class for easy management and collision detection
+class Platform:
+    def __init__(self, x, y, width, height):
+        """
+        Initialize a platform with position and size
+        x, y: Top-left corner position
+        width, height: Platform dimensions
+        """
+        self.rect = pygame.Rect(x, y, width, height)
+    
+    def draw(self, surface):
+        """Draw the platform on the screen"""
+        pygame.draw.rect(surface, PLATFORM_COLOR, self.rect)
+        # Draw a lighter top edge for visual depth
+        pygame.draw.rect(surface, (160, 82, 45), (self.rect.x, self.rect.y, self.rect.width, 5))
+
+# Create platform instances at different heights and positions
+# Format: Platform(x, y, width, height)
+platforms = [
+    Platform(150, 450, 150, 20),   # Low platform on the left
+    Platform(400, 380, 120, 20),   # Medium height platform in center
+    Platform(600, 300, 130, 20),   # Higher platform on the right
+    Platform(250, 250, 100, 20),   # Very high platform for testing
+]
+
 # Cloud setup (Initial positions and cloud movement speed)
 clouds = [
     [(150, 100, 30), (180, 100, 35), (165, 80, 25)],  # cloud 1
@@ -74,11 +103,13 @@ while game_running:
             screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
             # Update floor when window is resized
             jungle_floor = pygame.Rect(0, SCREEN_HEIGHT - FLOOR_HEIGHT, SCREEN_WIDTH, FLOOR_HEIGHT)
-            # Ensure tiger stays within the new window width
+            # Ensure tiger stays within the new window width and doesn't fall through floor
             if player_rect.right > SCREEN_WIDTH:
                 player_rect.right = SCREEN_WIDTH
             if player_rect.left < 0:
                 player_rect.left = 0
+            if player_rect.bottom > SCREEN_HEIGHT - FLOOR_HEIGHT:
+                player_rect.bottom = SCREEN_HEIGHT - FLOOR_HEIGHT
         
         # Handle jump as a single event instead of continuous key press
         # This prevents the player from jumping repeatedly when holding spacebar
@@ -105,11 +136,27 @@ while game_running:
     velocity_y += gravity
     player_rect.y += velocity_y
 
-    # Collision with the floor (stop falling when touching the ground)
+    # Reset on_ground flag before checking collisions
+    on_ground = False
+    
+    # Check collision with jungle floor
     if player_rect.bottom >= SCREEN_HEIGHT - FLOOR_HEIGHT:
-        player_rect.bottom = SCREEN_HEIGHT - FLOOR_HEIGHT  # Prevent player from sinking below floor
+        player_rect.bottom = SCREEN_HEIGHT - FLOOR_HEIGHT  # Snap player to floor top
         velocity_y = 0  # Stop falling
-        on_ground = True  # Player is now on the ground
+        on_ground = True  # Player is standing on the floor
+    
+    # Check collision with all platforms
+    for platform in platforms:
+        # Only check if player is falling (moving downward)
+        if velocity_y > 0:  # Player is moving down
+            # Check if player's bottom is touching or passing through platform top
+            if player_rect.colliderect(platform.rect):
+                # Make sure player is coming from above (not teleporting through from below)
+                if player_rect.bottom <= platform.rect.top + 15:  # Allow some tolerance for smooth landing
+                    player_rect.bottom = platform.rect.top  # Snap player to platform top
+                    velocity_y = 0  # Stop falling
+                    on_ground = True  # Player is standing on platform
+                    break  # Stop checking other platforms once we've landed
     
     # Engery Logic
     current_energy -= energy_drain
@@ -146,6 +193,10 @@ while game_running:
     # Draw jungle floor (stationary)
     pygame.draw.rect(screen, DARK_SOIL, jungle_floor)  # soil layer
     pygame.draw.rect(screen, JUNGLE_GREEN, (0, SCREEN_HEIGHT - FLOOR_HEIGHT, SCREEN_WIDTH, 20))  # grass/top
+
+    # Draw all platforms
+    for platform in platforms:
+        platform.draw(screen)
 
     # Draw banana
     pygame.draw.rect(screen, YELLOW, banana_rect)
