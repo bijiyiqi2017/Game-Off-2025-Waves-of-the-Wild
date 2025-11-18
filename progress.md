@@ -6,6 +6,10 @@ It follows semantic versioning alignment with the project's `CHANGELOG.md` but i
 
 ---
 
+## 🗓️ November 18, 2025
+
+- Created simple text win screen and center text
+
 ## 🗓️ November 17, 2025
 
 - Removed extra jump code to fix broken jump mechanics 
