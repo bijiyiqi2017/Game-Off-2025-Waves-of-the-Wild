@@ -21,7 +21,7 @@ RED = (255, 0, 0)
 WATER_BLUE = (0, 100, 255)
 
 font = pygame.font.SysFont(None, 80)
-
+ 
 # Floor setup
 FLOOR_HEIGHT = 60
 jungle_floor = pygame.Rect(0, SCREEN_HEIGHT - FLOOR_HEIGHT, SCREEN_WIDTH, FLOOR_HEIGHT)
@@ -148,6 +148,7 @@ while game_running:
         player_rect.x -= speed
     if keys[pygame.K_RIGHT]:
         player_rect.x += speed
+
     
     # Apply gravity
     velocity_y += gravity
