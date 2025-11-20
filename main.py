@@ -121,14 +121,12 @@ def draw_title_screen():
     pygame.draw.rect(screen, (34, 60, 34), jungle_ground)
     pygame.draw.rect(screen, JUNGLE_GREEN, (0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 30))
     
-    # ═══════════════════════════════════════════════════════════
-    #  OPTIONAL: Add background image here
-    # ═══════════════════════════════════════════════════════════
-    # If you have a jungle background image, load and display it here:
-    # 
-    # bg_image = pygame.image.load("assets/images/jungle_bg.jpg")
-    # bg_image = pygame.transform.scale(bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
-    # screen.blit(bg_image, (0, 0))
+
+    # background image here
+
+    bg_image = pygame.image.load("assets/images/jungle_bg.png")
+    bg_image = pygame.transform.scale(bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen.blit(bg_image, (0, 0))
     
     # ═══════════════════════════════════════════════════════════
     #  GAME TITLE
@@ -182,13 +180,10 @@ def draw_title_screen():
     credits_rect = credits_text.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT - 40))
     screen.blit(credits_text, credits_rect)
     
-    # ═══════════════════════════════════════════════════════════
-    #  OPTIONAL: Background music
-    # ═══════════════════════════════════════════════════════════
-    # Add ambient jungle sounds/music (add this ONCE at game start):
-    #
-    # pygame.mixer.music.load("assets/sounds/jungle_ambient.mp3")
-    # pygame.mixer.music.play(-1)  # -1 means loop forever
+
+    # Background music
+    pygame.mixer.music.load("assets/sounds/background_music.mp3")
+    pygame.mixer.music.play(-1)
     
     pygame.display.flip()
 
@@ -246,12 +241,10 @@ while game_running:
             if current_state == TITLE_SCREEN:
                 # Any key press transitions to gameplay
                 current_state = PLAYING
-                
-                # ─────────────────────────────────────────────
-                #  OPTIONAL: Play start sound effect
-                # ─────────────────────────────────────────────
-                # start_sound = pygame.mixer.Sound("assets/sounds/game_start.wav")
-                # start_sound.play()
+            
+                # Play start sound effect
+                start_sound = pygame.mixer.Sound("assets/sounds/start_sound.wav")
+                start_sound.play()
             
             # ═══════════════════════════════════════════════════
             #  GAMEPLAY: Space bar jumps
