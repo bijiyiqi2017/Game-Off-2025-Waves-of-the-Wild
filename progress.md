@@ -11,6 +11,7 @@ It follows semantic versioning alignment with the project's `CHANGELOG.md` but i
 - Added platforms, and adjusted heights
 - Adjusted energy drain speed
 - Relocated the win screen trigger banana
+- Merged pull request & fix broken issuess
 
 ## 🗓️ November 20, 2025
 
