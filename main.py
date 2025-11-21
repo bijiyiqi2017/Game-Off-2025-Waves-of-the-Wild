@@ -48,6 +48,28 @@ current_state = TITLE_SCREEN  # Start at title screen
 pulse_timer = 0
 pulse_alpha = 255  # Controls transparency (0 = invisible, 255 = solid)
 
+# ═══════════════════════════════════════════════════════════════
+#  BACKGROUND MUSIC SETUP
+# ═══════════════════════════════════════════════════════════════
+# Track if music has been loaded to avoid loading multiple times
+music_loaded = False
+title_music_playing = False
+
+# ═══════════════════════════════════════════════════════════════
+#  VOLUME SETTINGS - Adjust these numbers to control volume!
+# ═══════════════════════════════════════════════════════════════
+# Volume range: 0.0 = silent, 1.0 = maximum volume
+title_music_volume = 0.5      # Title screen music
+gameplay_music_volume = 0.3    # Gameplay music
+
+# ═══════════════════════════════════════════════════════════════
+# Background music (runs once at startup)
+# ═══════════════════════════════════════════════════════════════
+
+pygame.mixer.music.load("assets/sounds/background_music.mp3")
+pygame.mixer.music.set_volume(title_music_volume)  # Apply volume setting
+music_loaded = True
+
 # Platform class
 class Platform:
     def __init__(self, x, y, width, height):
@@ -111,7 +133,14 @@ def draw_title_screen():
     Draws the game's title screen with animated elements.
     This is the first thing players see!
     """
-    global pulse_timer, pulse_alpha
+    global pulse_timer, pulse_alpha, title_music_playing
+    
+    # ═══════════════════════════════════════════════════════════
+    #  START TITLE MUSIC (only once)
+    # ═══════════════════════════════════════════════════════════
+    if music_loaded and not title_music_playing:
+        pygame.mixer.music.play(-1)  # -1 means loop forever
+        title_music_playing = True
     
     # Background gradient effect (jungle vibes)
     screen.fill(DARK_GREEN)
@@ -121,8 +150,9 @@ def draw_title_screen():
     pygame.draw.rect(screen, (34, 60, 34), jungle_ground)
     pygame.draw.rect(screen, JUNGLE_GREEN, (0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 30))
     
-
-    # background image here
+    # ═══════════════════════════════════════════════════════════
+    # Background image
+    # ═══════════════════════════════════════════════════════════
 
     bg_image = pygame.image.load("assets/images/jungle_bg.png")
     bg_image = pygame.transform.scale(bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -169,21 +199,16 @@ def draw_title_screen():
     # Apply alpha transparency for pulse effect
     instruction_text.set_alpha(pulse_alpha)
     
-    instruction_rect = instruction_text.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT * 0.6))
+    instruction_rect = instruction_text.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT * 0.85))
     screen.blit(instruction_text, instruction_rect)
     
     # ═══════════════════════════════════════════════════════════
     #  CREDITS
     # ═══════════════════════════════════════════════════════════
-    credits_font = pygame.font.SysFont(None, 30)
+    credits_font = pygame.font.SysFont(None, 25)
     credits_text = credits_font.render("By Team Waves — Game Off 2025", True, WHITE)
-    credits_rect = credits_text.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT - 40))
+    credits_rect = credits_text.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT - 25))
     screen.blit(credits_text, credits_rect)
-    
-
-    # Background music
-    pygame.mixer.music.load("assets/sounds/background_music.mp3")
-    pygame.mixer.music.play(-1)
     
     pygame.display.flip()
 
@@ -239,12 +264,28 @@ while game_running:
             #  TITLE SCREEN: Any key starts game
             # ═══════════════════════════════════════════════════
             if current_state == TITLE_SCREEN:
+                # Stop title music when transitioning to gameplay
+                if title_music_playing:
+                    pygame.mixer.music.stop()
+                
                 # Any key press transitions to gameplay
                 current_state = PLAYING
-            
+                
+                # ─────────────────────────────────────────────
                 # Play start sound effect
+                # ─────────────────────────────────────────────
                 start_sound = pygame.mixer.Sound("assets/sounds/start_sound.wav")
                 start_sound.play()
+
+                # ─────────────────────────────────────────────
+                #  OPTIONAL: Start gameplay music
+                # ─────────────────────────────────────────────
+
+                # if music_loaded:
+                #     pygame.mixer.music.load("assets/sounds/gameplay_music.mp3")
+                #     pygame.mixer.music.set_volume(gameplay_music_volume)  # Apply volume
+                #     pygame.mixer.music.play(-1)  # Loop forever
+                #     gameplay_music_playing = True
             
             # ═══════════════════════════════════════════════════
             #  GAMEPLAY: Space bar jumps
