@@ -12,6 +12,8 @@ It follows semantic versioning alignment with the project's `CHANGELOG.md` but i
 - Adjusted energy drain speed
 - Relocated the win screen trigger banana
 - Merged pull request & fix broken issuess
+- Updated CHANGELOG
+
 
 ## 🗓️ November 20, 2025
 

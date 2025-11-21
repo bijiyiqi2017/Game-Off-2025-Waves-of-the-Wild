@@ -16,6 +16,37 @@ We follow **[Semantic Versioning](https://semver.org/)**:
 - Fixed bug
 - Changed behavior
 
+[1.1.0] – 2025-11-21
+Added
+
+Win screen triggered by collecting the winning banana.
+
+Energy burst system with visual effects and temporary energy boost.
+
+Background music and start sound integrated into gameplay.
+
+Resizable title and win screens with dynamic text scaling.
+
+Platforms, clouds, water hazard, and collectibles functionality maintained.
+
+Changed
+
+Refactored main.py to use state-driven gameplay loop (TITLE_SCREEN, PLAYING, GAME_OVER_STATE, WIN_STATE).
+
+Removed undefined variables game_over and game_win; replaced with current_state.
+
+Consolidated game screens and logic for smoother transitions.
+
+Adjusted banana respawn logic and energy system mechanics.
+
+Fixed
+
+Ensured player cannot exceed max energy during energy bursts.
+
+Fixed collisions with platforms and lake hazard while jumping.
+
+Smooth pulsing "Press any key" animation on title screen.
+
 
 [0.1.0-dev]
 
