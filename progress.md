@@ -6,6 +6,16 @@ It follows semantic versioning alignment with the project's `CHANGELOG.md` but i
 
 ---
 
+## 🗓️ November 20, 2025
+
+- Added platforms, and adjusted heights
+- Adjusted energy drain speed
+- Relocated the win screen trigger banana
+
+## 🗓️ November 20, 2025
+
+- Created waves of energy text on screen and burst of energy in energy bar (5 burts of 4)
+
 ## 🗓️ November 18, 2025
 
 - Created simple text win screen and center text
