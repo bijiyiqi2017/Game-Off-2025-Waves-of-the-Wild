@@ -1,3 +1,4 @@
+import os
 import pygame
 import sys
 import random
@@ -7,6 +8,20 @@ import math
 # INITIALIZATION
 # -----------------------------
 pygame.init()
+pygame.mixer.init()
+
+
+# -----------------------------
+# AUDIO FILES
+# -----------------------------
+try:
+    jump_sound = pygame.mixer.Sound("assets/sounds/jump.mp3")
+    jump_sound.set_volume(0.5)  # adjust volume if needed
+except pygame.error:
+    jump_sound = None
+    print("Warning: jump.mp3 not found")
+
+
 
 # Screen setup
 SCREEN_WIDTH = 800
@@ -36,9 +51,9 @@ font = pygame.font.SysFont(None, 80)
 FLOOR_HEIGHT = 60
 jungle_floor = pygame.Rect(0, SCREEN_HEIGHT - FLOOR_HEIGHT, SCREEN_WIDTH, FLOOR_HEIGHT)
 
-# ═══════════════════════════════════════════════════════════════
+# -----------------------------
 # GAME STATES
-# ═══════════════════════════════════════════════════════════════
+# -----------------------------
 TITLE_SCREEN = 0
 PLAYING = 1
 GAME_OVER_STATE = 2
@@ -46,27 +61,34 @@ WIN_STATE = 3
 
 current_state = TITLE_SCREEN  # Start at title screen
 
-# ═══════════════════════════════════════════════════════════════
+# -----------------------------
 # TITLE SCREEN ANIMATION VARIABLES
-# ═══════════════════════════════════════════════════════════════
+# -----------------------------
 pulse_timer = 0
 pulse_alpha = 255
 
-# ═══════════════════════════════════════════════════════════════
+# -----------------------------
 # BACKGROUND MUSIC SETUP
-# ═══════════════════════════════════════════════════════════════
+# -----------------------------
 music_loaded = False
 title_music_playing = False
 title_music_volume = 0.5
 gameplay_music_volume = 0.3
+audio_enabled = True
 
-pygame.mixer.music.load("assets/sounds/background_music.mp3")
-pygame.mixer.music.set_volume(title_music_volume)
-music_loaded = True
+# Try to load music only if audio initialized
+if audio_enabled:
+    try:
+        pygame.mixer.music.load("assets/sounds/background_music.mp3")
+        pygame.mixer.music.set_volume(title_music_volume)
+        music_loaded = True
+    except pygame.error:
+        music_loaded = False
+        print("Warning: Could not load background music.")
 
-# ═══════════════════════════════════════════════════════════════
+# -----------------------------
 # PLATFORM CLASS
-# ═══════════════════════════════════════════════════════════════
+# -----------------------------
 class Platform:
     def __init__(self, x, y, width, height):
         self.rect = pygame.Rect(x, y, width, height)
@@ -92,7 +114,9 @@ clouds = [
 cloud_speed = 0.2
 cloud_positions = [0, 0]
 
+# -----------------------------
 # PLAYER SETUP
+# -----------------------------
 tiger_img = pygame.image.load("assets/images/tiger.jpg").convert_alpha()
 tiger_img = pygame.transform.scale(tiger_img, (50, 60))
 player_rect = tiger_img.get_rect()
@@ -103,7 +127,9 @@ gravity = 0.5
 jump_power = -10
 on_ground = True
 
+# -----------------------------
 # ENERGY SYSTEM
+# -----------------------------
 max_energy = 100
 current_energy = max_energy
 energy_drain = 0.25
@@ -114,9 +140,11 @@ energy_burst_text = ""
 energy_burst_text_timer = 0
 energy_burst_value = 4  # Each burst adds 4 energy
 
+# -----------------------------
 # BANANAS
-banana_rect = pygame.Rect(400, 400, 30, 30)
-banana_win_rect = pygame.Rect(500, 200, 30, 20)
+# -----------------------------
+banana_rect = pygame.Rect(400, 400, 30, 30)  # regular respawning banana
+banana_win_rect = pygame.Rect(500, 200, 30, 20)  # win banana
 banana_win_active = True
 banana_respawn_delay = 0
 BANANA_RESPAWN_TIME = 180  # 3 seconds
@@ -125,7 +153,31 @@ def banana_spawn():
     banana_rect.x = random.randint(50, SCREEN_WIDTH - 50)
     banana_rect.y = random.randint(100, SCREEN_HEIGHT - FLOOR_HEIGHT - 50)
 
+# -----------------------------
+# WIN BANANA IMAGE
+# -----------------------------
+try:
+    win_banana_img = pygame.image.load("assets/images/one_banana.jpg").convert_alpha()
+    win_banana_img = pygame.transform.scale(win_banana_img, (30, 20))
+except pygame.error:
+    win_banana_img = pygame.Surface((30, 20), pygame.SRCALPHA)
+    pygame.draw.ellipse(win_banana_img, YELLOW, win_banana_img.get_rect())
+    print("Warning: one_banana.jpg not found — using placeholder surface.")
+
+# -----------------------------
+# REGULAR GOLD BANANA IMAGE
+# -----------------------------
+try:
+    banana_img = pygame.image.load("assets/images/gold_banana.jpg").convert_alpha()
+    banana_img = pygame.transform.scale(banana_img, (30, 30))
+except pygame.error:
+    banana_img = pygame.Surface((30, 30), pygame.SRCALPHA)
+    pygame.draw.ellipse(banana_img, YELLOW, banana_img.get_rect())
+    print("Warning: gold_banana.jpg not found — using placeholder surface.")
+
+# -----------------------------
 # LAKE
+# -----------------------------
 lake_height = 12
 water_rect = pygame.Rect(250, SCREEN_HEIGHT - FLOOR_HEIGHT - lake_height, 300, lake_height)
 
@@ -133,24 +185,26 @@ water_rect = pygame.Rect(250, SCREEN_HEIGHT - FLOOR_HEIGHT - lake_height, 300, l
 clock = pygame.time.Clock()
 game_running = True
 
-# ═══════════════════════════════════════════════════════════════
+# -----------------------------
 # SCREEN DRAW FUNCTIONS
-# ═══════════════════════════════════════════════════════════════
+# -----------------------------
 def draw_title_screen():
     global pulse_timer, pulse_alpha, title_music_playing
 
-    if music_loaded and not title_music_playing:
+    # Start title music once
+    if audio_enabled and music_loaded and not title_music_playing:
         pygame.mixer.music.play(-1)
         title_music_playing = True
 
     screen.fill(DARK_GREEN)
-    jungle_ground = pygame.Rect(0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 100)
-    pygame.draw.rect(screen, (34, 60, 34), jungle_ground)
-    pygame.draw.rect(screen, JUNGLE_GREEN, (0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 30))
-
-    bg_image = pygame.image.load("assets/images/jungle_bg.png")
-    bg_image = pygame.transform.scale(bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
-    screen.blit(bg_image, (0, 0))
+    try:
+        bg = pygame.image.load("assets/images/jungle_bg.png")
+        bg = pygame.transform.scale(bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
+        screen.blit(bg, (0, 0))
+    except pygame.error:
+        jungle_ground = pygame.Rect(0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 100)
+        pygame.draw.rect(screen, (34, 60, 34), jungle_ground)
+        pygame.draw.rect(screen, JUNGLE_GREEN, (0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 30))
 
     title_font = pygame.font.SysFont(None, 90)
     title_text = "Waves of the Wild"
@@ -178,6 +232,20 @@ def draw_title_screen():
 
     pygame.display.flip()
 
+
+def draw_game_over_screen():
+    screen.fill((0, 0, 0))
+    text_surface = font.render("GAME OVER!", True, RED)
+    text_rect = text_surface.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
+    screen.blit(text_surface, text_rect)
+
+    restart_font = pygame.font.SysFont(None, 40)
+    restart_text = restart_font.render("Press any key to return to title", True, WHITE)
+    restart_rect = restart_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT * 0.75))
+    screen.blit(restart_text, restart_rect)
+    pygame.display.flip()
+
+
 def draw_win_screen():
     screen.fill((0, 0, 0))
     base_font_size = 60
@@ -193,40 +261,65 @@ def draw_win_screen():
     draw_text_centered("Congrats!", 0.3)
     draw_text_centered("You survived...", 0.5)
     draw_text_centered("Enjoy life with friends & family", 0.9)
+
+    restart_font = pygame.font.SysFont(None, 35)
+    restart_text = restart_font.render("Press any key to return to title", True, WHITE)
+    restart_rect = restart_text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT * 0.8))
+    screen.blit(restart_text, restart_rect)
+
     pygame.display.flip()
 
-def draw_game_over_screen():
-    screen.fill((0, 0, 0))
-    text_surface = font.render("GAME OVER!", True, RED)
-    text_rect = text_surface.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//2))
-    screen.blit(text_surface, text_rect)
-    pygame.display.flip()
 
-# ═══════════════════════════════════════════════════════════════
+# -----------------------------
 # MAIN GAME LOOP
-# ═══════════════════════════════════════════════════════════════
+# -----------------------------
 while game_running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             game_running = False
+
         elif event.type == pygame.VIDEORESIZE:
             SCREEN_WIDTH, SCREEN_HEIGHT = event.w, event.h
             screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.RESIZABLE)
             jungle_floor = pygame.Rect(0, SCREEN_HEIGHT - FLOOR_HEIGHT, SCREEN_WIDTH, FLOOR_HEIGHT)
             water_rect.y = SCREEN_HEIGHT - FLOOR_HEIGHT - lake_height
+
         elif event.type == pygame.KEYDOWN:
             if current_state == TITLE_SCREEN:
-                if title_music_playing:
+                if audio_enabled and title_music_playing:
                     pygame.mixer.music.stop()
+                    title_music_playing = False
                 current_state = PLAYING
-                start_sound = pygame.mixer.Sound("assets/sounds/start_sound.wav")
-                start_sound.play()
+                if audio_enabled:
+                    try:
+                        start_sound = pygame.mixer.Sound("assets/sounds/start_sound.wav")
+                        start_sound.play()
+                    except pygame.error:
+                        pass
             elif current_state == PLAYING:
                 if event.key == pygame.K_SPACE and on_ground:
                     velocity_y = jump_power
                     on_ground = False
+                    # Play jump sound
+                    if jump_sound:
+                        jump_sound.play()
+            elif current_state in (GAME_OVER_STATE, WIN_STATE):
+                current_state = TITLE_SCREEN
+                banana_win_active = True
+                banana_respawn_delay = 0
+                banana_spawn()
+                player_rect.topleft = (50, SCREEN_HEIGHT - FLOOR_HEIGHT - tiger_img.get_height())
+                current_energy = max_energy
+                energy_burst_active = False
+                energy_burst_count = 0
+                energy_burst_text_timer = 0
+                if audio_enabled:
+                    try:
+                        pygame.mixer.music.stop()
+                    except pygame.error:
+                        pass
+                title_music_playing = False
 
-    # Render based on state
     if current_state == TITLE_SCREEN:
         draw_title_screen()
         continue
@@ -275,6 +368,7 @@ while game_running:
         current_energy = 0
         current_state = GAME_OVER_STATE
 
+    # Regular gold banana (energy burst)
     if player_rect.colliderect(banana_rect) and not energy_burst_active:
         energy_burst_active = True
         energy_burst_count = 5
@@ -284,6 +378,7 @@ while game_running:
         banana_rect.topleft = (-200, -200)
         banana_respawn_delay = BANANA_RESPAWN_TIME
 
+    # Win banana collision
     if banana_win_active and player_rect.colliderect(banana_win_rect):
         banana_win_active = False
         banana_win_rect.topleft = (-100, -100)
@@ -328,12 +423,17 @@ while game_running:
     for platform in platforms:
         platform.draw(screen)
 
-    pygame.draw.rect(screen, YELLOW, banana_rect)
-    if banana_win_active:
-        pygame.draw.rect(screen, YELLOW, banana_win_rect)
+    # Draw regular gold banana
+    screen.blit(banana_img, banana_rect)
 
+    # Draw win banana
+    if banana_win_active:
+        screen.blit(win_banana_img, banana_win_rect)
+
+    # Player
     screen.blit(tiger_img, player_rect)
 
+    # Energy HUD
     if energy_burst_active:
         glow_rect = pygame.Rect(15, 15, int(current_energy * 2), 30)
         pygame.draw.rect(screen, GLOW_COLOR, glow_rect, border_radius=8)
