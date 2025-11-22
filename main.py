@@ -14,14 +14,28 @@ pygame.mixer.init()
 # -----------------------------
 # AUDIO FILES
 # -----------------------------
+# Load jump sound
 try:
     jump_sound = pygame.mixer.Sound("assets/sounds/jump.mp3")
     jump_sound.set_volume(0.5)  # adjust volume if needed
 except pygame.error:
     jump_sound = None
     print("Warning: jump.mp3 not found")
+    
+# Load banana collect sound
+try:
+    banana_collect_sound = pygame.mixer.Sound("assets/sounds/level-up.mp3")
+except pygame.error:
+    banana_collect_sound = None
+    print("Warning: level-up.mp3 not found.")
 
-
+# Load win sound
+try:
+    win_sound = pygame.mixer.Sound("assets/sounds/win.mp3")
+    win_sound.set_volume(0.5)  # adjust volume if needed
+except (pygame.error, FileNotFoundError):
+    win_sound = None
+    print("Warning: win.mp3 not found — using no sound.")
 
 # Screen setup
 SCREEN_WIDTH = 800
@@ -378,11 +392,20 @@ while game_running:
         banana_rect.topleft = (-200, -200)
         banana_respawn_delay = BANANA_RESPAWN_TIME
 
+        # Play banana collect sound
+        if banana_collect_sound:
+            banana_collect_sound.play()
+
+
     # Win banana collision
     if banana_win_active and player_rect.colliderect(banana_win_rect):
         banana_win_active = False
         banana_win_rect.topleft = (-100, -100)
         current_state = WIN_STATE
+        
+         # Play win sound
+        if win_sound:
+            win_sound.play()
 
     if energy_burst_active:
         if burst_frame_cooldown <= 0:

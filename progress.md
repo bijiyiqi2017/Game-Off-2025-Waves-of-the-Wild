@@ -6,7 +6,13 @@ It follows semantic versioning alignment with the project's `CHANGELOG.md` but i
 
 ---
 
-## 🗓️ November 20, 2025
+## 🗓️ November 22, 2025
+
+- Added audio files & sprite images from Chen Bao
+- Linked jump action to audio file
+
+
+## 🗓️ November 21, 2025
 
 - Added platforms, and adjusted heights
 - Adjusted energy drain speed
