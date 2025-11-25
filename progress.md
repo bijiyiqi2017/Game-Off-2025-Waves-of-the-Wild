@@ -6,6 +6,14 @@ It follows semantic versioning alignment with the project's `CHANGELOG.md` but i
 
 ---
 
+## 🗓️ November 25, 2025
+
+- Reverted code to previous version in order to simplify for game off and slowly break main.py into smaller packages
+
+## 🗓️ November 24, 2025
+
+- Started to separate main.py into smaller packages
+
 ## 🗓️ November 22, 2025
 
 - Added audio files & sprite images from Chen Bao
