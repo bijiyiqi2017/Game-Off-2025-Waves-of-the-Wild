@@ -2,8 +2,8 @@ import pygame
 from src.settings import PLATFORM_COLOR
 
 class Platform:
-    def __init__(self, x, y, w, h):
-        self.rect = pygame.Rect(x, y, w, h)
+    def __init__(self, x, y, width, height):
+        self.rect = pygame.Rect(x, y, width, height)
 
-    def draw(self, screen):
-        pygame.draw.rect(screen, PLATFORM_COLOR, self.rect)
+    def draw(self, surface):
+        pygame.draw.rect(surface, PLATFORM_COLOR, self.rect)
