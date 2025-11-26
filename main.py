@@ -64,6 +64,11 @@ pygame.mixer.music.load("assets/sounds/background_music.mp3")
 pygame.mixer.music.set_volume(title_music_volume)
 music_loaded = True
 
+# WIN SOUND EFFECT
+win_sound = pygame.mixer.Sound("assets/sounds/win.mp3")
+win_sound.set_volume(0.7)
+
+
 # ═══════════════════════════════════════════════════════════════
 # PLATFORM CLASS
 # ═══════════════════════════════════════════════════════════════
@@ -288,6 +293,10 @@ while game_running:
         banana_win_active = False
         banana_win_rect.topleft = (-100, -100)
         current_state = WIN_STATE
+        
+        if music_loaded:
+            pygame.mixer.music.stop()
+        win_sound.play()
 
     if energy_burst_active:
         if burst_frame_cooldown <= 0:
