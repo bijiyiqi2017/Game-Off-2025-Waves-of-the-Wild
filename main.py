@@ -68,6 +68,9 @@ music_loaded = True
 win_sound = pygame.mixer.Sound("assets/sounds/win.mp3")
 win_sound.set_volume(0.7)
 
+level_up_sound = pygame.mixer.Sound("assets/sounds/level-up.mp3")
+
+
 
 # ═══════════════════════════════════════════════════════════════
 # PLATFORM CLASS
@@ -281,6 +284,7 @@ while game_running:
         current_state = GAME_OVER_STATE
 
     if player_rect.colliderect(banana_rect) and not energy_burst_active:
+        level_up_sound.play()
         energy_burst_active = True
         energy_burst_count = 5
         burst_frame_cooldown = 0
