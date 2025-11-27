@@ -6,6 +6,17 @@ It follows semantic versioning alignment with the project's `CHANGELOG.md` but i
 
 ---
 
+
+## 🗓️ November 27, 2025
+
+- Added audio to wave of energy burst
+
+- Replace placeholder with one_banana.jpg
+
+## 🗓️ November 26, 2025
+
+- Added audio to win screen 
+
 ## 🗓️ November 25, 2025
 
 - Reverted code to previous version in order to simplify for game off and slowly break main.py into smaller packages

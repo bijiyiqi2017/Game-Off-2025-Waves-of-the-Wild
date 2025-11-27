@@ -111,6 +111,8 @@ gravity = 0.5
 jump_power = -10
 on_ground = True
 
+
+
 # ENERGY SYSTEM
 max_energy = 100
 current_energy = max_energy
@@ -123,7 +125,12 @@ energy_burst_text_timer = 0
 energy_burst_value = 4  # Each burst adds 4 energy
 
 # BANANAS
-banana_rect = pygame.Rect(400, 400, 30, 30)
+# banana_rect = pygame.Rect(400, 400, 30, 30)
+banana_img = pygame.image.load("assets/images/one_banana.jpg").convert_alpha()
+banana_img = pygame.transform.scale(banana_img, (30, 30))  
+banana_rect = banana_img.get_rect()
+banana_rect.topleft = (400, 400)
+
 banana_win_rect = pygame.Rect(500, 200, 30, 20)
 banana_win_active = True
 banana_respawn_delay = 0
@@ -341,7 +348,8 @@ while game_running:
     for platform in platforms:
         platform.draw(screen)
 
-    pygame.draw.rect(screen, YELLOW, banana_rect)
+    # pygame.draw.rect(screen, YELLOW, banana_rect)
+    screen.blit(banana_img, banana_rect)
     if banana_win_active:
         pygame.draw.rect(screen, YELLOW, banana_win_rect)
 
