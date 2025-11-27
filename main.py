@@ -131,8 +131,15 @@ banana_img = pygame.transform.scale(banana_img, (30, 30))
 banana_rect = banana_img.get_rect()
 banana_rect.topleft = (400, 400)
 
-banana_win_rect = pygame.Rect(500, 200, 30, 20)
+# banana_win_rect = pygame.Rect(500, 200, 30, 20)
+# banana_win_active = True
+# WIN BANANA IMAGE (Goal)
+gold_banana_img = pygame.image.load("assets/images/gold_bananas.png").convert_alpha()
+gold_banana_img = pygame.transform.scale(gold_banana_img, (40, 40))
+banana_win_rect = gold_banana_img.get_rect()
+banana_win_rect.center = (500, 200)
 banana_win_active = True
+
 banana_respawn_delay = 0
 BANANA_RESPAWN_TIME = 180  # 3 seconds
 
@@ -302,7 +309,9 @@ while game_running:
 
     if banana_win_active and player_rect.colliderect(banana_win_rect):
         banana_win_active = False
-        banana_win_rect.topleft = (-100, -100)
+        #banana_win_rect.topleft = (-100, -100)
+        banana_win_rect.center = (-100, -100)
+
         current_state = WIN_STATE
         
         if music_loaded:
@@ -350,8 +359,10 @@ while game_running:
 
     # pygame.draw.rect(screen, YELLOW, banana_rect)
     screen.blit(banana_img, banana_rect)
+    # if banana_win_active:
+        # pygame.draw.rect(screen, YELLOW, banana_win_rect)
     if banana_win_active:
-        pygame.draw.rect(screen, YELLOW, banana_win_rect)
+        screen.blit(gold_banana_img, banana_win_rect)
 
     screen.blit(tiger_img, player_rect)
 

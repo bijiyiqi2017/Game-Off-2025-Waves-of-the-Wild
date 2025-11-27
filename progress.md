@@ -13,6 +13,8 @@ It follows semantic versioning alignment with the project's `CHANGELOG.md` but i
 
 - Replace placeholder with one_banana.jpg
 
+- Replace win banana placeholder with image gold_bananas.png 
+
 ## 🗓️ November 26, 2025
 
 - Added audio to win screen 
