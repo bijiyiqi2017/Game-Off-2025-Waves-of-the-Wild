@@ -3,7 +3,7 @@
 # 🌊 Waves of the Wild  
 
  
-**Stage:** Initial Setup and Prototype Foundation  
+**Stage:** Initial Setup and Visual Foundation  
 
 ## 🪶 Overview  
 **Waves of the Wild** is a 2D atmospheric adventure built with **Python + Pygame**.  
@@ -21,13 +21,14 @@ The game is being developed as part of **Game Off 2025**, starting with basic sc
 
 ---
 
-## 🧩 Features (Prototype Stage)  
+## 🧩 Prototype Features
+
 - Initialized project structure with virtual environment  
 - Configured Pygame window (800 × 600 px)  
 - Added sky background color *(Sky Blue — RGB 135, 206, 235)*  
 - Created ground layer *(Jungle Green + Dark Soil)*  
 - Implemented parallax cloud layers for visual depth  
-- Organized assets and scripts for scalable development  
+- Organized assets and scripts (still WIP) for scalable development  
 
 ---
 
@@ -70,8 +71,8 @@ You should see a window titled “Waves of the Wild: Parallax Clouds” displayi
 Milestone	Description	Status
 Scene setup	Pygame window, background colors	✅
 Parallax effect	Multi-layer cloud scrolling	✅
-Player prototype	Movement + jump mechanics	🔜
-Collision & platforms	Detect and respond to terrain	🔜
+Player prototype	Movement + jump mechanics	✅
+Collision & platforms	Detect and respond to terrain	✅ 
 Wildlife AI	Basic movement and reactions	🔜
 
 🤝 Contributing

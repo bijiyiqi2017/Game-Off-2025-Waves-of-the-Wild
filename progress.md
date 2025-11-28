@@ -15,6 +15,8 @@ It follows semantic versioning alignment with the project's `CHANGELOG.md` but i
 
 - Replace win banana placeholder with image gold_bananas.png 
 
+- Fix gitignore file Progress.md to progress.md
+
 ## 🗓️ November 26, 2025
 
 - Added audio to win screen 
