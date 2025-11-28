@@ -67,6 +67,22 @@ python main.py
 
 You should see a window titled “Waves of the Wild: Parallax Clouds” displaying a peaceful blue sky with layers of drifting clouds.
 
+
+## 🖼️ Screenshots
+
+### Title Screen
+![Title Screen](assets/images/title.png)
+*The game opens with a calm jungle background and parallax clouds.*
+
+### Energy Burst
+![Wave of Energy](assets/images/waveofenergy.png)
+*Collect bananas to trigger the "Wave of Energy" and restore player energy.*
+
+### Win Screen
+![Win Screen](assets/images/winscreen.png)
+*Celebrate success with the win screen once the player reaches the goal.*
+
+
 ## 🧭 Roadmap
 Milestone	Description	Status
 Scene setup	Pygame window, background colors	✅

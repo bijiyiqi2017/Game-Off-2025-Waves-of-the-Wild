@@ -13,6 +13,10 @@ It follows semantic versioning alignment with the project's `CHANGELOG.md` but i
 
 - Removed unneeded .gitkeep 
 
+- Added 3 screenshot images
+
+- Linked the 3 images into README.md 
+
 ## 🗓️ November 27, 2025
 
 - Added audio to wave of energy burst
