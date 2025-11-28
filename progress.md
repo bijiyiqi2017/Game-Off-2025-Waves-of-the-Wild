@@ -7,6 +7,12 @@ It follows semantic versioning alignment with the project's `CHANGELOG.md` but i
 ---
 
 
+## 🗓️ November 28, 2025
+
+- Amend README.md
+
+- Removed unneeded .gitkeep 
+
 ## 🗓️ November 27, 2025
 
 - Added audio to wave of energy burst
