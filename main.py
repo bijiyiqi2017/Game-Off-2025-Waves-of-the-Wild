@@ -133,6 +133,7 @@ banana_rect.topleft = (400, 400)
 
 # banana_win_rect = pygame.Rect(500, 200, 30, 20)
 # banana_win_active = True
+
 # WIN BANANA IMAGE (Goal)
 gold_banana_img = pygame.image.load("assets/images/gold_bananas.png").convert_alpha()
 gold_banana_img = pygame.transform.scale(gold_banana_img, (40, 40))

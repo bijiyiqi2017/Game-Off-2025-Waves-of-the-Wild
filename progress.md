@@ -17,6 +17,8 @@ It follows semantic versioning alignment with the project's `CHANGELOG.md` but i
 
 - Linked the 3 images into README.md 
 
+- Installed Pyinstaller
+
 ## 🗓️ November 27, 2025
 
 - Added audio to wave of energy burst
